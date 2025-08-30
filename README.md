@@ -50,19 +50,3 @@ src/
 - Node.js >= 18
 - npm >= 9
 
----
-
-## 🤝 Contributing
-
-Pull requests are welcome!  
-For major changes, please open an issue first to discuss what you’d like to change.
-
----
-
-## 📄 License
-
-MIT
-
----
-
-> Made with creativity and code. Explore the cosmos, share your story, and let your
