@@ -1,2 +1,0 @@
-# For reference only: This is a Node.js project, not Python.
-nodejs>=18.0.0
