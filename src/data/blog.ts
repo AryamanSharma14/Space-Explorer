@@ -1,3 +1,6 @@
+import { blogService, BlogPost as FirebaseBlogPost } from '../lib/blogService';
+
+// Keep your existing interface (exactly as it is)
 export interface BlogPost {
   id: string;
   title: string;
@@ -11,7 +14,8 @@ export interface BlogPost {
   image?: string;
 }
 
-export const blogData: BlogPost[] = [
+// Your existing static blog posts (keeping all of them)
+export const staticBlogData: BlogPost[] = [
   {
     id: "1",
     title: "Journey to Full-Stack Mastery: A Developer's Cosmic Evolution",
@@ -272,3 +276,35 @@ As you continue exploring the TypeScript universe, think of types not as constra
     readTime: "14 min read"
   }
 ];
+
+// New hybrid data fetching function
+export const getAllBlogPosts = async (): Promise<BlogPost[]> => {
+  try {
+    // Get Firebase posts
+    const firebasePosts = await blogService.getAllPosts();
+    
+    // Convert Firebase posts to match your interface
+    const convertedFirebasePosts = firebasePosts.map(post => ({
+      id: post.id || '',
+      title: post.title,
+      slug: post.slug || post.title.toLowerCase().replace(/\s+/g, '-'),
+      excerpt: post.excerpt,
+      content: post.content,
+      category: post.category,
+      tags: post.tags || [],
+      publishedAt: post.publishedAt || new Date().toISOString().split('T')[0],
+      readTime: post.readTime || '5 min read',
+      image: post.image
+    }));
+
+    // Combine static and Firebase posts, with Firebase posts first
+    return [...convertedFirebasePosts, ...staticBlogData];
+  } catch (error) {
+    console.error('Error fetching Firebase posts, falling back to static data:', error);
+    // If Firebase fails, return only static data
+    return staticBlogData;
+  }
+};
+
+// Keep backward compatibility
+export const blogData = staticBlogData;
