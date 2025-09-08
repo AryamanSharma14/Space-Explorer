@@ -1,3 +1,5 @@
+# Ignore Firebase config file
+src/lib/firebase.ts
 # Node modules
 node_modules/
 
